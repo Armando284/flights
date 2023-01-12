@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  // theme colors
+  --color-primary: #333;
+  --color-secondary: #999;
+  --bg-primary: #eee;
+  --bg-secondary: #fff;
+
+  // colors
+  --color-success: rgba(110, 255, 117, 0.3);
+  --color-info: rgba(110, 243, 255, 0.3);
+  --color-danger: rgba(255, 110, 110, 0.3);
+
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--color-primary);
+  background: var(--bg-primary);
+}
