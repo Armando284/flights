@@ -7,5 +7,5 @@ export interface PaginateFlights {
   nextPage: number | null,
   total: number,
   totalPages: number,
-  data: Flight[]
+  items: Flight[]
 }

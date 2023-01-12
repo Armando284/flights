@@ -1,17 +1,18 @@
 import { v4 } from 'uuid';
 import { Flight, PaginateFlights } from "../models";
 
-const emptyFlights: Flight[] = new Array<Flight>(15);
-
 const randomCapacity = (): number => ~~(Math.random() * 100);
 
-const flightsData = emptyFlights.map(flight => {
-  flight.code = v4();
-  flight.capacity = randomCapacity();
-  flight.constructionDate = new Date();
-  return flight;
+const range: number[] = new Array<number>(15).fill(0);
+// console.log({ emptyFlights });
+const flightsData: Flight[] = range.map(i => {
+  return {
+    code: v4(),
+    capacity: randomCapacity(),
+    constructionDate: new Date()
+  }
 });
-
+console.log({ flightsData });
 const paginate = (array: Flight[], page: number = 1, perPage: number = 10) => {
   const offset = (page - 1) * perPage,
     paginatedItems = array.slice(offset).slice(0, perPage),
@@ -23,8 +24,14 @@ const paginate = (array: Flight[], page: number = 1, perPage: number = 10) => {
     nextPage: totalPages > page ? page + 1 : null,
     total: array.length,
     totalPages,
-    data: paginatedItems
+    items: paginatedItems
   }
 }
 
-export const getFlightsPage = (page: number, perPage: number): PaginateFlights => paginate(flightsData, page, perPage);
+export const getFlightsPage = (page: number, perPage: number): Promise<PaginateFlights> => {
+  return new Promise<PaginateFlights>((resolve, reject) => {
+    setTimeout(() => {
+      resolve(paginate(flightsData, page, perPage));
+    }, 300);
+  })
+};
