@@ -1,0 +1,28 @@
+<section id="flights">
+  <h1>Flights List</h1>
+  <div *ngIf="flights.length > 0; else noFlights">
+    <table>
+      <tr>
+        <th>#</th>
+        <th>Code</th>
+        <th>Capacity</th>
+        <th>Construction date</th>
+      </tr>
+      <tr
+        *ngFor="let flight of flights; index as i"
+        class="row-data"
+        [ngClass]="{ 'row-light': i % 2 === 0, 'row-dark': i % 2 !== 0 }"
+      >
+        <td>{{ i }}</td>
+        <td>{{ flight.code }}</td>
+        <td>{{ flight.capacity }}</td>
+        <td>{{ flight.constructionDate | date }}</td>
+      </tr>
+    </table>
+  </div>
+</section>
+<ng-template #noFlights>
+  <div>
+    <span class="error">No flights available</span>
+  </div>
+</ng-template>
