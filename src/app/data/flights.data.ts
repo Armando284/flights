@@ -27,4 +27,4 @@ const paginate = (array: Flight[], page: number = 1, perPage: number = 10) => {
   }
 }
 
-const getFlightsPage = (page: number, perPage: number): PaginateFlights => paginate(flightsData, page, perPage);
+export const getFlightsPage = (page: number, perPage: number): PaginateFlights => paginate(flightsData, page, perPage);
