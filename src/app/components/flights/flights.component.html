@@ -13,14 +13,42 @@
         class="row-data"
         [ngClass]="{ 'row-light': i % 2 === 0, 'row-dark': i % 2 !== 0 }"
       >
-        <td>{{ i }}</td>
+        <td>{{ i + 1 }}</td>
         <td>{{ flight.code }}</td>
         <td>{{ flight.capacity }}</td>
         <td>{{ flight.constructionDate | date }}</td>
       </tr>
     </table>
   </div>
+  <div class="per-pages">
+    <label for="perPage">Items per page.</label>
+    <br />
+    <select
+      name="perPage"
+      id="perPage"
+      #perPageSelect
+      (change)="changeItemsPerPage(perPageSelect.value)"
+    >
+      <option
+        *ngFor="let num of range(totalFlights)"
+        [value]="num"
+        [selected]="num === perPage"
+      >
+        {{ num }}
+      </option>
+    </select>
+  </div>
+  <div class="button-group">
+    <button [disabled]="page <= 1" (pointerdown)="prevPag()">&#171;</button>
+    <div class="pager">
+      <span> {{ page }}/{{ totalPages }} </span>
+    </div>
+    <button [disabled]="page >= totalPages" (pointerdown)="nextPag()">
+      &#187;
+    </button>
+  </div>
 </section>
+
 <ng-template #noFlights>
   <div>
     <span class="error">No flights available</span>
