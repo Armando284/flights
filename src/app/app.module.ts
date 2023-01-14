@@ -7,11 +7,13 @@ import { FlightsComponent } from './components/flights/flights.component';
 
 // Services
 import { FlightService } from './services';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FlightsComponent
+    FlightsComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
