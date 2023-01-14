@@ -1,31 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { FlightService } from 'src/app/services';
 import { Flight, PaginateFlights } from 'src/app/models';
-import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
   selector: 'app-flights',
   templateUrl: './flights.component.html',
   styleUrls: ['./flights.component.scss'],
 })
 export class FlightsComponent {
-  private _page: number = 1;
-  private _perPage: number = 10;
+  page: number = 1;
+  perPage: number = 10;
   flights: Flight[] = [];
   totalFlights: number = 0;
   totalPages: number = Infinity;
 
   constructor(
     private _flightsService: FlightService,
-    private _location: Location,
     private _router: Router,
     private _activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this._page = parseInt(localStorage.getItem('page') || '1');
-    this._perPage = parseInt(localStorage.getItem('perPage') || '10');
-    this.loadFlights();
+    this._activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.page = +(params.get('page') || '1');
+      this.perPage = +(params.get('perPage') || '10');
+      console.log(this.page, this.perPage);
+      this.loadFlights();
+    });
+
   }
 
   private loadFlights() {
@@ -35,43 +37,36 @@ export class FlightsComponent {
         this.flights = data.items;
         this.totalFlights = data.total;
         this.totalPages = data.totalPages;
-        if (this.page > this.totalPages) this.page = 1;
-
+        if (!this.isValidPage(this.page) || !this.isValidPerPage(this.perPage)) {
+          this._router.navigate(['bad-request']);
+        }
       });
-    this.makeUrl();
   }
 
   private isValidPage(page: number = 1): boolean {
     return page > 0 && page <= this.totalPages;
   }
 
-  set page(page: number) {
-    if (!this.isValidPage(page)) return;
-    this._page = page;
-    localStorage.setItem('page', page.toString());
-    this.loadFlights();
+  private isValidPerPage(perPage: number = 1): boolean {
+    return perPage > 0 && perPage <= this.totalFlights;
   }
 
-  get page(): number {
-    return this._page;
+  private navigate() {
+    this._router.navigate(['/flights', 'page', this.page, 'perPage', this.perPage]);
   }
 
-  set perPage(perPage: number) {
-    this._perPage = perPage;
-    localStorage.setItem('perPage', perPage.toString());
-    this.loadFlights();
-  }
-
-  get perPage(): number {
-    return this._perPage;
+  private updatePage(page: number): void {
+    if (!this.isValidPage(page)) return
+    this.page = page;
+    this.navigate();
   }
 
   prevPag(): void {
-    this.page = this.page - 1;
+    this.updatePage(this.page - 1);
   }
 
   nextPag(): void {
-    this.page = this.page + 1;
+    this.updatePage(this.page + 1);
   }
 
   range(i: number): number[] {
@@ -81,16 +76,9 @@ export class FlightsComponent {
   }
 
   changeItemsPerPage(perPage: string): void {
-    this.perPage = parseInt(perPage);
-  }
-
-  private makeUrl() {
-    const url = this._router
-      .createUrlTree([], {
-        relativeTo: this._activatedRoute,
-        queryParams: { page: this.page, perPage: this.perPage },
-      })
-      .toString();
-    this._location.go(url);
+    if (!this.isValidPerPage(+perPage)) return;
+    this.perPage = +perPage;
+    if (this.page > Math.ceil(this.totalFlights / this.perPage)) this.page = 1;
+    this.navigate();
   }
 }
