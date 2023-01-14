@@ -12,7 +12,7 @@ const flightsData: Flight[] = range.map(i => {
     constructionDate: new Date()
   }
 });
-console.log({ flightsData });
+
 const paginate = (array: Flight[], page: number = 1, perPage: number = 10) => {
   const offset = (page - 1) * perPage,
     paginatedItems = array.slice(offset).slice(0, perPage),
