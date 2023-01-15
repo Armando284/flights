@@ -1,1 +1,1 @@
-export { getFlightsPage } from './flights.data';
+export { getFlightsPage, createFlight } from './flights.data';

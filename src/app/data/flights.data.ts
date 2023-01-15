@@ -35,3 +35,7 @@ export const getFlightsPage = (page: number, perPage: number): Promise<PaginateF
     }, 300);
   })
 };
+
+export const createFlight = (flight: Flight) => {
+  flightsData.push(flight);
+}
