@@ -81,4 +81,8 @@ export class FlightsComponent {
     if (this.page > Math.ceil(this.totalFlights / this.perPage)) this.page = 1;
     this.navigate();
   }
+
+  addFlights() {
+    this._router.navigate(['/flights', 'create']);
+  }
 }

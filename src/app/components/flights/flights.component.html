@@ -1,6 +1,6 @@
 <section id="flights">
   <h1>Flights List</h1>
-  <div *ngIf="flights.length > 0; else noFlights">
+  <div class="list" *ngIf="flights.length > 0; else noFlights">
     <table>
       <tr>
         <th>#</th>
@@ -19,6 +19,9 @@
         <td>{{ flight.constructionDate | date }}</td>
       </tr>
     </table>
+  </div>
+  <div class="button-group button-right">
+    <button (pointerdown)="addFlights()">Add Flight</button>
   </div>
   <div class="per-pages">
     <label for="perPage">Items per page.</label>
