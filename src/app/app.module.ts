@@ -8,16 +8,23 @@ import { FlightsComponent } from './components/flights/flights.component';
 // Services
 import { FlightService } from './services';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { CreateFlightComponent } from './components/create-flight/create-flight.component';
+import { BackButtonComponent } from './components/shared/back-button/back-button.component';
+
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlightsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CreateFlightComponent,
+    BackButtonComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
   ],
   providers: [
     FlightService
